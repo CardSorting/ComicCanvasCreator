@@ -1,0 +1,203 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #3498db;
+    padding: 1rem;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex: 1;
+}
+
+#toolbar, #sidebar {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: #f0f0f0;
+}
+
+#toolbar button, #toolbar input, #sidebar button, #sidebar input, #sidebar select {
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+#toolbar button i, #sidebar button i {
+    margin-right: 0.5rem;
+}
+
+#canvas-container {
+    flex: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 1rem;
+}
+
+.comic-panel {
+    display: inline-block;
+    margin-right: 1rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.draggable-element {
+    width: 50px;
+    height: 50px;
+    margin: 0.25rem;
+    cursor: move;
+}
+
+.text-bubble {
+    position: absolute;
+    min-width: 100px;
+    min-height: 50px;
+    padding: 10px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: move;
+    font-size: 1rem;
+}
+
+.resizer {
+    width: 44px;
+    height: 44px;
+    background: #3498db;
+    position: absolute;
+    right: -22px;
+    bottom: -22px;
+    cursor: se-resize;
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+.floating-toolbar {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background-color: #f0f0f0;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.floating-toolbar button, .floating-toolbar input, .floating-toolbar select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+}
+
+/* High Contrast Mode */
+.high-contrast {
+    background-color: #000;
+    color: #fff;
+}
+
+.high-contrast #toolbar,
+.high-contrast #sidebar,
+.high-contrast .comic-panel,
+.high-contrast .text-bubble {
+    background-color: #000;
+    color: #fff;
+    border-color: #fff;
+}
+
+.high-contrast #toolbar button,
+.high-contrast #sidebar button,
+.high-contrast .floating-toolbar button {
+    background-color: #fff;
+    color: #000;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 56px; /* Height of the mobile navigation */
+        z-index: 1000;
+        background-color: rgba(240, 240, 240, 0.95);
+        overflow-y: auto;
+    }
+
+    #sidebar.hidden {
+        display: none;
+    }
+
+    #canvas-container {
+        padding-bottom: 56px; /* Make room for the mobile navigation */
+    }
+
+    #mobile-nav {
+        height: 56px;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #mobile-nav button {
+        padding: 0.5rem;
+    }
+
+    #mobile-nav i {
+        font-size: 1.5rem;
+    }
+}
+
+/* Accessibility Improvements */
+button:focus, input:focus, select:focus, .text-bubble:focus, .resizer:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+/* Ensure contrast for text on colored backgrounds */
+.bg-blue-500, .bg-green-500, .bg-yellow-500, .bg-purple-500, .bg-red-500 {
+    color: #fff;
+}
+
+/* Increase tap target sizes for mobile */
+@media (max-width: 768px) {
+    #toolbar button, #sidebar button, #toolbar input, #sidebar input, #sidebar select {
+        padding: 1rem;
+        font-size: 1.1rem;
+    }
+
+    .draggable-element {
+        width: 60px;
+        height: 60px;
+    }
+}

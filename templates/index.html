@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Strip Maker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div id="app" class="min-h-screen flex flex-col">
+        <header class="bg-blue-600 text-white p-4">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-bold">Comic Strip Maker</h1>
+            </div>
+        </header>
+        <main class="flex-grow flex flex-col md:flex-row">
+            <div id="canvas-container" class="flex-grow p-4 overflow-x-auto whitespace-nowrap"></div>
+            <div id="sidebar" class="bg-gray-200 p-4 md:w-64 hidden md:block">
+                <h2 class="text-xl font-bold mb-4">Elements</h2>
+                <div id="images" class="mb-4">
+                    <h3 class="font-bold mb-2">Images</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <img src="{{ url_for('static', filename='img/characters/character1.svg') }}" draggable="true" class="draggable-element w-full h-auto" data-type="image" alt="Character 1">
+                        <img src="{{ url_for('static', filename='img/characters/character2.svg') }}" draggable="true" class="draggable-element w-full h-auto" data-type="image" alt="Character 2">
+                        <img src="{{ url_for('static', filename='img/backgrounds/background1.svg') }}" draggable="true" class="draggable-element w-full h-auto" data-type="image" alt="Background 1">
+                        <img src="{{ url_for('static', filename='img/backgrounds/background2.svg') }}" draggable="true" class="draggable-element w-full h-auto" data-type="image" alt="Background 2">
+                    </div>
+                </div>
+                <div id="text-options" class="hidden">
+                    <h3 class="font-bold mb-2">Text Options</h3>
+                    <select id="font-family" class="w-full mb-2 p-2 rounded text-lg">
+                        <option value="Arial">Arial</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                    </select>
+                    <input type="number" id="font-size" min="8" max="72" value="16" class="w-full mb-2 p-2 rounded text-lg">
+                    <select id="text-align" class="w-full mb-2 p-2 rounded text-lg">
+                        <option value="left">Left</option>
+                        <option value="center">Center</option>
+                        <option value="right">Right</option>
+                    </select>
+                    <input type="color" id="text-color" value="#000000" class="w-full mb-2 p-1 rounded">
+                    <label class="flex items-center mb-2 text-lg"><input type="checkbox" id="text-bold" class="mr-2"> Bold</label>
+                    <label class="flex items-center mb-2 text-lg"><input type="checkbox" id="text-italic" class="mr-2"> Italic</label>
+                    <label class="flex items-center mb-2 text-lg"><input type="checkbox" id="text-underline" class="mr-2"> Underline</label>
+                    <select id="bubble-type" class="w-full mb-2 p-2 rounded text-lg">
+                        <option value="speech">Speech</option>
+                        <option value="thought">Thought</option>
+                        <option value="shout">Shout</option>
+                        <option value="whisper">Whisper</option>
+                        <option value="narration">Narration</option>
+                    </select>
+                </div>
+                <div id="image-options" class="hidden">
+                    <h3 class="font-bold mb-2">Image Options</h3>
+                    <button id="resize-image" class="w-full mb-2 p-4 bg-blue-500 text-white rounded text-lg">Resize</button>
+                    <button id="crop-image" class="w-full mb-2 p-4 bg-green-500 text-white rounded text-lg">Crop</button>
+                    <button id="rotate-image" class="w-full mb-2 p-4 bg-yellow-500 text-white rounded text-lg">Rotate</button>
+                </div>
+            </div>
+        </main>
+        <nav id="mobile-nav" class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+            <ul class="flex justify-around p-2">
+                <li>
+                    <button id="add-panel-mobile" class="flex flex-col items-center text-gray-600">
+                        <i class="fas fa-plus-square text-2xl"></i>
+                        <span class="text-xs">Add Panel</span>
+                    </button>
+                </li>
+                <li>
+                    <button id="upload-image-mobile" class="flex flex-col items-center text-gray-600">
+                        <i class="fas fa-upload text-2xl"></i>
+                        <span class="text-xs">Upload Image</span>
+                    </button>
+                </li>
+                <li>
+                    <button id="text-tool-mobile" class="flex flex-col items-center text-gray-600">
+                        <i class="fas fa-font text-2xl"></i>
+                        <span class="text-xs">Text Tool</span>
+                    </button>
+                </li>
+                <li>
+                    <button id="save-comic-mobile" class="flex flex-col items-center text-gray-600">
+                        <i class="fas fa-save text-2xl"></i>
+                        <span class="text-xs">Save Comic</span>
+                    </button>
+                </li>
+                <li>
+                    <button id="more-options-mobile" class="flex flex-col items-center text-gray-600">
+                        <i class="fas fa-ellipsis-h text-2xl"></i>
+                        <span class="text-xs">More</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}" type="module"></script>
+</body>
+</html>
