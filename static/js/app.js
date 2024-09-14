@@ -1,54 +1,80 @@
 import { PanelService } from './services/PanelService.js';
-import { TextBubbleService } from './services/TextBubbleService.js';
-import { DragDropService } from './services/DragDropService.js';
 import { ImageService } from './services/ImageService.js';
-import { initializeToolbar } from './toolbar.js';
+import { DragDropService } from './services/DragDropService.js';
+import { TextBubbleService } from './services/TextBubbleService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const canvasContainer = document.getElementById('canvas-container');
-    const sidebar = document.getElementById('sidebar');
-    const highContrastToggle = document.getElementById('high-contrast');
-
     const panelService = new PanelService();
-    const textBubbleService = new TextBubbleService();
-    const dragDropService = new DragDropService();
     const imageService = new ImageService();
+    const dragDropService = new DragDropService();
+    const textBubbleService = new TextBubbleService();
+
+    const sidebar = document.getElementById('sidebar');
+    const canvasContainer = document.getElementById('canvas-container');
 
     panelService.initializeCanvas(canvasContainer);
-    initializeToolbar(sidebar);
+    imageService.initializeImageUpload();
     dragDropService.initializeDragAndDrop(sidebar, canvasContainer);
     textBubbleService.initializeTextBubble();
-    imageService.initializeImageUpload();
 
-    // Add initial panel
-    panelService.addPanel();
-
-    // Event listener for adding new panels
-    document.getElementById('add-panel').addEventListener('click', () => {
+    // Add panel button
+    const addPanelButton = document.getElementById('add-panel');
+    addPanelButton.addEventListener('click', () => {
         panelService.addPanel();
         saveState();
     });
 
-    // Event listener for reordering panels
-    document.getElementById('reorder-panels').addEventListener('click', () => {
+    // Reorder panels button
+    const reorderButton = document.getElementById('reorder-panels');
+    reorderButton.addEventListener('click', () => {
         panelService.reorderPanels();
         saveState();
     });
 
-    // Event listener for changing layout
-    document.getElementById('change-layout').addEventListener('click', () => {
+    // Change layout button
+    const changeLayoutButton = document.getElementById('change-layout');
+    changeLayoutButton.addEventListener('click', () => {
         panelService.changeLayout();
         saveState();
     });
 
-    // Undo and Redo functionality
-    document.getElementById('undo').addEventListener('click', undo);
-    document.getElementById('redo').addEventListener('click', redo);
+    // Save comic button
+    const saveComicButton = document.getElementById('save-comic');
+    saveComicButton.addEventListener('click', () => {
+        panelService.saveComic();
+    });
 
-    // High Contrast mode toggle
-    highContrastToggle.addEventListener('click', toggleHighContrast);
+    // Export buttons
+    const exportPDFButton = document.getElementById('export-pdf');
+    const exportSVGButton = document.getElementById('export-svg');
 
-    // Mobile navigation functionality
+    exportPDFButton.addEventListener('click', () => exportComic('pdf'));
+    exportSVGButton.addEventListener('click', () => exportComic('svg'));
+
+    function exportComic(format) {
+        const comicData = document.getElementById('canvas-container').innerHTML;
+        fetch('/export', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ format, comicData }),
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `comic.${format}`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error exporting comic:', error));
+    }
+
+    // Mobile navigation
     const addPanelMobile = document.getElementById('add-panel-mobile');
     const textToolMobile = document.getElementById('text-tool-mobile');
     const saveComicMobile = document.getElementById('save-comic-mobile');
